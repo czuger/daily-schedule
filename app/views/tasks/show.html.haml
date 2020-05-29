@@ -13,13 +13,12 @@
 
   #tasks_list
 
-  #task_model
-    .row.sortable-row
-      .col-6#task_desc
-      .col-1#task_start
-      .col-1#task_end
-      .col-1
-        = number_field_tag :task_duration, '', class: 'form-control task_duration', 'v-model' => :task_duration_modification
+  #task_model.row.sortable-row
+    .col-6#task_desc
+    .col-1#task_start
+    .col-1#task_end
+    .col-1
+      = number_field_tag :task_duration, '', class: 'form-control task_duration', 'v-model' => :task_duration_modification
       -#.col-1
       -#  = button_tag :remove_task, class: 'btn btn-primary'
 
