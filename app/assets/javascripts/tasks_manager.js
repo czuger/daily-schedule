@@ -11,6 +11,19 @@ class CustomTask {
         this.id = id;
     }
 
+    compute_times( previous_time ){
+        this.start_time = previous_time;
+        this.end_time = this.start_time;
+        this.end_time = this.end_time.plus({minutes: parseInt(this.task_duration)});
+
+        previous_time = this.end_time;
+
+        this.start_time = this.start_time.toLocaleString({ hour: 'numeric', minute: 'numeric' });
+        this.end_time = this.end_time.toLocaleString({ hour: 'numeric', minute: 'numeric' });
+
+        return previous_time;
+    }
+
     show_task( previous_time ){
         var _tm = $( '#task_model' ).clone();
         var _tl = _tm.find( '#task_desc' );
@@ -62,7 +75,7 @@ class TasksManager {
         // console.log( this.day_start_time );
         this.day_start_time = this.day_start_time.startOf('day');
         // console.log( this.day_start_time );
-        this.day_start_time = this.day_start_time.plus({hours: 6, minutes: 30});
+        this.day_start_time = this.day_start_time.plus({hours: 12, minutes: 15});
         // console.log( this.day_start_time );
 
     }
@@ -87,18 +100,22 @@ class TasksManager {
         this.tasks[ task_id ].task_duration = task_duration;
     }
 
-    refresh_tasks_list(){
+    recomputeTasksList(){
 
-        $('#tasks_list').empty();
+        // $('#tasks_list').empty();
 
         var previous_time = this.day_start_time;
 
         for (const task_key of this.tasks_order) {
-            previous_time = this.tasks[ task_key ].show_task( previous_time );
+            previous_time = this.tasks[ task_key ].compute_times( previous_time );
         }
     }
 
-    load( result ){
+    toVueJsArray() {
+        return this.tasks_order.map(e => this.tasks[e]);
+    }
+
+    load( result, vue ){
         // console.log( result );
 
         this.tasks_unique_id = parseInt( result.tasks_unique_id );
@@ -115,7 +132,8 @@ class TasksManager {
             }
         }
 
-        this.refresh_tasks_list();
+        this.recomputeTasksList();
+        vue.tasks = this.toVueJsArray();
     }
 
     save(){

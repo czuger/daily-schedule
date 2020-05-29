@@ -2,25 +2,28 @@
 
   %h1 Liste des tâches
 
-  #add_tasks_bar
-    .row
-      .col-6
-        = text_field_tag :new_task, '', class: 'form-control', 'v-model' => :new_task
-      .col-1
-        = number_field_tag :duration, '', class: 'form-control', 'v-model' => :duration
-      .col-1
-        = button_tag :add_task, class: 'btn btn-primary', 'v-on:click' => 'add_task', id: 'add_task'
+  #tasks
+    #add_tasks_bar
+      .row
+        .col-6
+          = text_field_tag :new_task, '', class: 'form-control', 'v-model' => :new_task
+        .col-1
+          = number_field_tag :duration, '', class: 'form-control', 'v-model' => :duration
+        .col-1
+          = button_tag :add_task, class: 'btn btn-primary', 'v-on:click' => 'add_task', id: 'add_task'
 
-  #tasks_list
+    #tasks_list
+      <scheduled-task v-for="task in tasks" v-bind:key="task.id" v-bind:task_data="task"></scheduled-task>
+      -#%scheduled-task
 
-  #task_model.row.sortable-row.mt-3
-    .col-6#task_desc
-    .col-1#task_start
-    .col-1#task_end
-    .col-1
-      = number_field_tag :task_duration, '', class: 'form-control task_duration'
-    .col-1
-      = button_tag :remove_task, class: 'btn btn-danger task_remove'
+  -##task_model.row.sortable-row.mt-3
+  -#  .col-6#task_desc
+  -#  .col-1#task_start
+  -#  .col-1#task_end
+  -#  .col-1
+  -#    = number_field_tag :task_duration, '', class: 'form-control task_duration'
+  -#  .col-1
+  -#    = button_tag :remove_task, class: 'btn btn-danger task_remove'
 
   -#.row.mt-3
   -#  .col-6

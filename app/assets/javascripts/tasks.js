@@ -1,9 +1,27 @@
 const set_tasks_vue = function(){
+
+    Vue.component('scheduled-task', {
+        props: ['task_data'],
+        template: `<div class="row sortable-row mt-3">
+            <div class="col-6">{{ task_data.task_desc }}</div>
+            <div class="col-1">{{ task_data.start_time }}</div>
+            <div class="col-1">{{ task_data.end_time }}</div>
+            <div class="col-1">
+            <input type="number" name="task_duration" value="task_data.task_duration" class="form-control">
+            </div>
+            <div class="col-1">
+            <button name="button" type="submit" class="btn btn-danger">remove_task</button>
+            </div>
+        </div>`
+    })
+
     var v = new Vue({
-        el: "#add_tasks_bar",
+        el: "#tasks",
         data: {
             new_task: null,
             duration: null,
+
+            tasks: []
         },
         methods: {
             add_task: function (event) {
@@ -21,11 +39,14 @@ const set_tasks_vue = function(){
         },
     });
 
-    const tasks_array = new TasksManager();
+    var tasks_array = new TasksManager();
     $.getJSON( "/tasks/load", function( result ){
-        tasks_array.load( result );
+        tasks_array.load( result, v );
 
-        after_modification();
+        console.log( tasks_array );
+        console.log( v );
+
+        // after_modification();
     } );
 
     const set_task_duration_watch = function(){
@@ -67,11 +88,11 @@ const set_tasks_vue = function(){
     }
 
     const after_modification = function() {
-        tasks_array.refresh_tasks_list();
-        set_task_duration_watch();
-        set_task_remove_watch();
-        set_tasks_sortable();
-        tasks_array.save();
+        // tasks_array.refresh_tasks_list();
+        // set_task_duration_watch();
+        // set_task_remove_watch();
+        // set_tasks_sortable();
+        // tasks_array.save();
     }
 };
 
@@ -81,9 +102,10 @@ $(function() {
 
     $(document).keypress(function(event){
 
+        // Thanks to https://stackoverflow.com/questions/57843201/trigger-a-html-button-when-you-press-enter
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        console.log( keycode );
+        // console.log( keycode );
         if(keycode == '13'){
-            $("#add_task").click();
+            // $("#add_task").click();
         }});
 });
