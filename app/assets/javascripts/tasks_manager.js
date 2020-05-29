@@ -26,6 +26,7 @@ class CustomTask {
         _tl.html( this.task_desc );
         _td.val( this.task_duration );
         _td.attr( 'task_id', this.task_key );
+        _tm.attr( 'task_id', this.task_key );
 
         _ts.html( start_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
         _te.html( end_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
@@ -66,7 +67,7 @@ class TasksManager {
     }
 
     changeDuration( task_id, task_duration ){
-        this.tasks[ parseInt(task_id) ].task_duration = task_duration;
+        this.tasks[ task_id ].task_duration = task_duration;
     }
 
     refresh_tasks_list(){
@@ -79,4 +80,6 @@ class TasksManager {
             previous_time = this.tasks[ task_key ].show_task( previous_time );
         }
     }
+
+
 }

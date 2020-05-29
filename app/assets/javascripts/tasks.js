@@ -4,7 +4,6 @@ const set_tasks_vue = function(){
         data: {
             new_task: null,
             duration: null,
-            task_duration_modification: null
         },
         methods: {
             add_task: function (event) {
@@ -25,10 +24,9 @@ const set_tasks_vue = function(){
         $( '.task_duration' ).change( function(){
             var _t = $(this);
             tasks_array.changeDuration( _t.attr( 'task_id' ), _t.val() );
+
             tasks_array.refresh_tasks_list();
-
             set_task_duration_watch();
-
             sort_gangs()
         });
     };
@@ -38,10 +36,18 @@ const set_tasks_vue = function(){
             {
                 items: '.sortable-row',
                 stop: function(){
-                    console.log( 'toto' );
+
+                    tasks_array.tasks_order = [];
+
                     $("#tasks_list").children().each(function(){
-                        console.log( $(this) );
+                        tasks_array.tasks_order.push( $(this).attr( 'task_id') );
+                        // console.log( $(this).attr( 'task_id') );
                     });
+
+                    console.log( tasks_array.tasks_order );
+
+                    tasks_array.refresh_tasks_list();
+                    set_task_duration_watch();
                 }
             }
         );
