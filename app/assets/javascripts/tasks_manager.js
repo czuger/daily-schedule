@@ -17,6 +17,7 @@ class CustomTask {
         var _td = _tm.find( '#task_duration' );
         var _ts = _tm.find( '#task_start' );
         var _te = _tm.find( '#task_end' );
+        var _tr = _tm.find( '.task_remove' );
 
         var start_time = previous_time;
         var end_time = start_time;
@@ -28,6 +29,7 @@ class CustomTask {
         _td.val( this.task_duration );
         _td.attr( 'task_id', this.task_key );
         _tm.attr( 'task_id', this.task_key );
+        _tr.attr( 'task_id', this.task_key );
 
         _ts.html( start_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
         _te.html( end_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
@@ -70,6 +72,15 @@ class TasksManager {
         this.tasks[ _t.task_key ] = _t;
         this.tasks_order.push( _t.task_key );
         this.tasks_unique_id += 1;
+    }
+
+    removeTask( task_key ){
+        delete this.tasks[ task_key ];
+
+        const index = this.tasks_order.indexOf(task_key);
+        if (index > -1) {
+            this.tasks_order.splice(index, 1);
+        }
     }
 
     changeDuration( task_id, task_duration ){

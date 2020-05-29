@@ -22,6 +22,9 @@ const set_tasks_vue = function(){
     const tasks_array = new TasksManager();
     $.getJSON( "/tasks/load", function( result ){
         tasks_array.load( result );
+
+        sort_gangs();
+        set_task_remove_watch();
     } );
 
     const set_task_duration_watch = function(){
@@ -31,6 +34,23 @@ const set_tasks_vue = function(){
 
             tasks_array.refresh_tasks_list();
             set_task_duration_watch();
+            set_task_remove_watch();
+            tasks_array.save();
+            sort_gangs()
+        });
+    };
+
+    const set_task_remove_watch = function(){
+        $( '.task_remove' ).click( function(){
+
+            console.log( 'foo' );
+
+            var _t = $(this);
+            tasks_array.removeTask( _t.attr( 'task_id' ) );
+
+            tasks_array.refresh_tasks_list();
+            set_task_duration_watch();
+            set_task_remove_watch();
             tasks_array.save();
             sort_gangs()
         });
@@ -61,6 +81,7 @@ const set_tasks_vue = function(){
     }
 
     sort_gangs();
+    set_task_remove_watch();
 
 };
 
