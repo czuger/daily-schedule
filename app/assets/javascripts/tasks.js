@@ -7,13 +7,21 @@ const set_tasks_vue = function(){
             <div class="col-1">{{ task_data.start_time }}</div>
             <div class="col-1">{{ task_data.end_time }}</div>
             <div class="col-1">
-            <input type="number" name="task_duration" value="task_data.task_duration" class="form-control">
+            <input type="number" name="task_duration" v-on:change="duration_change(task_data.task_key)" v-model="task_data.task_duration" class="form-control">
             </div>
             <div class="col-1">
-            <button name="button" type="submit" class="btn btn-danger">remove_task</button>
+            <button name="button" type="submit" @click="task_removal(task_data.task_key)" class="btn btn-danger">remove_task</button>
             </div>
-        </div>`
-    })
+        </div>`,
+        methods: {
+            duration_change: function (task_id) {
+                console.log( task_id, this.task_data.task_duration );
+            },
+            task_removal: function (task_id) {
+                console.log( task_id );
+            }
+        }
+    });
 
     var v = new Vue({
         el: "#tasks",

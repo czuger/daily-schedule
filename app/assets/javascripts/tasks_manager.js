@@ -24,40 +24,6 @@ class CustomTask {
         return previous_time;
     }
 
-    show_task( previous_time ){
-        var _tm = $( '#task_model' ).clone();
-        var _tl = _tm.find( '#task_desc' );
-        var _td = _tm.find( '#task_duration' );
-        var _ts = _tm.find( '#task_start' );
-        var _te = _tm.find( '#task_end' );
-        var _tr = _tm.find( '.task_remove' );
-
-        var start_time = previous_time;
-        var end_time = start_time;
-        end_time = end_time.plus({minutes: parseInt(this.task_duration)});
-
-        // console.log( start_time, end_time );
-
-        _tl.html( this.task_desc );
-        _td.val( this.task_duration );
-        _td.attr( 'task_id', this.task_key );
-        _tm.attr( 'task_id', this.task_key );
-        _tr.attr( 'task_id', this.task_key );
-
-        _ts.html( start_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
-        _te.html( end_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
-
-        _tm.attr( 'id', 'task_model_' + this.task_key );
-        _tl.attr( 'id', 'task_desc_' + this.task_key );
-        _td.attr( 'id', 'task_duration_' + this.task_key );
-        _ts.attr( 'id', 'task_start_' + this.task_key );
-        _te.attr( 'id', 'task_end_' + this.task_key );
-
-        $( '#tasks_list' ).append( _tm );
-
-        return end_time;
-    }
-
     force_key( key ){
         this.task_key = key;
     }
