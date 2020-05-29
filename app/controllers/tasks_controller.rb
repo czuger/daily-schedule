@@ -7,4 +7,11 @@ class TasksController < ApplicationController
       f.write( params[ :data ].to_json )
     end
   end
+
+  def load
+    File.open( 'data/tasks.json', 'r' ) do |f|
+      render plain: f.read()
+    end
+  end
+
 end

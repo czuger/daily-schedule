@@ -20,6 +20,9 @@ const set_tasks_vue = function(){
     });
 
     const tasks_array = new TasksManager();
+    $.getJSON( "/tasks/load", function( result ){
+        tasks_array.load( result );
+    } );
 
     const set_task_duration_watch = function(){
         $( '.task_duration' ).change( function(){

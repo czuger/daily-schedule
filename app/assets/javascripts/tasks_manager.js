@@ -8,6 +8,7 @@ class CustomTask {
         this.task_desc = task_desc;
         this.task_duration = task_duration;
         this.task_key = 'task_' + id;
+        this.id = id;
     }
 
     show_task( previous_time ){
@@ -41,6 +42,11 @@ class CustomTask {
 
         return end_time;
     }
+
+    force_key( key ){
+        this.task_key = key;
+    }
+
 }
 
 class TasksManager {
@@ -81,10 +87,27 @@ class TasksManager {
         }
     }
 
+    load( result ){
+        console.log( result );
+        this.tasks_order = result.tasks_order;
+        this.tasks_unique_id = parseInt( result.tasks_unique_id );
+
+        this.tasks = {};
+        for (const task_key of Object.keys( result.tasks ) ) {
+            var _d = result.tasks[ task_key ];
+            var _t = new CustomTask( _d.id, _d.task_desc, _d.task_duration );
+            this.tasks[ task_key ] = _t;
+        }
+
+        console.log( this );
+        this.refresh_tasks_list();
+    }
+
     save(){
         var data = {
             tasks_order: this.tasks_order,
-            tasks: this.tasks
+            tasks: this.tasks,
+            tasks_unique_id: this.tasks_unique_id
         }
 
         $.post( "/tasks/create", { data: data } )
