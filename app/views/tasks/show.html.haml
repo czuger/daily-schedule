@@ -9,7 +9,7 @@
       .col-1
         = number_field_tag :duration, '', class: 'form-control', 'v-model' => :duration
       .col-1
-        = button_tag :add_task, class: 'btn btn-primary', 'v-on:click' => 'add_task'
+        = button_tag :add_task, class: 'btn btn-primary', 'v-on:click' => 'add_task', id: 'add_task'
 
   #tasks_list
 
