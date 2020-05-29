@@ -81,5 +81,12 @@ class TasksManager {
         }
     }
 
+    save(){
+        var data = {
+            tasks_order: this.tasks_order,
+            tasks: this.tasks
+        }
 
+        $.post( "/tasks/create", { data: data } )
+    }
 }

@@ -14,6 +14,7 @@ const set_tasks_vue = function(){
                 tasks_array.refresh_tasks_list();
 
                 set_task_duration_watch();
+                tasks_array.save();
             },
         },
     });
@@ -27,6 +28,7 @@ const set_tasks_vue = function(){
 
             tasks_array.refresh_tasks_list();
             set_task_duration_watch();
+            tasks_array.save();
             sort_gangs()
         });
     };
@@ -48,6 +50,7 @@ const set_tasks_vue = function(){
 
                     tasks_array.refresh_tasks_list();
                     set_task_duration_watch();
+                    tasks_array.save();
                 }
             }
         );
