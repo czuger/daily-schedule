@@ -20,10 +20,12 @@ class CustomTask {
         var end_time = start_time;
         end_time = end_time.plus({minutes: parseInt(this.task_duration)});
 
-        console.log( start_time, end_time );
+        // console.log( start_time, end_time );
 
         _tl.html( this.task_desc );
-        _td.html( this.task_duration );
+        _td.val( this.task_duration );
+        _td.attr( 'task_id', index );
+
         _ts.html( start_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
         _te.html( end_time.toLocaleString({ hour: 'numeric', minute: 'numeric' }));
 
@@ -46,16 +48,20 @@ class TasksManager {
         this.tasks = [];
         this.day_start_time = luxon.DateTime.local();
 
-        console.log( this.day_start_time );
+        // console.log( this.day_start_time );
         this.day_start_time = this.day_start_time.startOf('day');
-        console.log( this.day_start_time );
+        // console.log( this.day_start_time );
         this.day_start_time = this.day_start_time.plus({hours: 6, minutes: 30});
-        console.log( this.day_start_time );
+        // console.log( this.day_start_time );
 
     }
 
     addTask( task_desc, task_duration ){
         this.tasks.push( new CustomTask( task_desc, task_duration ) );
+    }
+
+    changeDuration( task_id, task_duration ){
+        this.tasks[ parseInt(task_id) ].task_duration = task_duration;
     }
 
     refresh_tasks_list(){

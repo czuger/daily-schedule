@@ -1,26 +1,35 @@
-// Unit type part
-var tasks_array = new TasksManager();
-
 const set_tasks_vue = function(){
     var v = new Vue({
         el: "#add_tasks_bar",
         data: {
             new_task: null,
             duration: null,
-            task_id: 1,
+            task_duration_modification: null
         },
         methods: {
             add_task: function (event) {
-                console.log( v.new_task, v.duration );
-
-                console.log( tasks_array );
+                // console.log( v.new_task, v.duration );
+                // console.log( tasks_array );
 
                 tasks_array.addTask( v.new_task, v.duration );
-
                 tasks_array.refresh_tasks_list();
+
+                set_task_duration_watch();
             },
         },
     });
+
+    const tasks_array = new TasksManager();
+
+    const set_task_duration_watch = function(){
+        $( '.task_duration' ).change( function(){
+            var _t = $(this);
+            tasks_array.changeDuration( _t.attr( 'task_id' ), _t.val() );
+            tasks_array.refresh_tasks_list();
+
+            set_task_duration_watch();
+        });
+    }
 };
 
 // Initialisation
