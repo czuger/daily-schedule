@@ -28,8 +28,28 @@ const set_tasks_vue = function(){
             tasks_array.refresh_tasks_list();
 
             set_task_duration_watch();
+
+            sort_gangs()
         });
+    };
+
+    const sort_gangs = function() {
+        $( "#tasks_list" ).sortable(
+            {
+                items: '.sortable-row',
+                stop: function(){
+                    console.log( 'toto' );
+                    $("#tasks_list").children().each(function(){
+                        console.log( $(this) );
+                    });
+                }
+            }
+        );
+        $( "#tasks_list" ).disableSelection();
     }
+
+    sort_gangs();
+
 };
 
 // Initialisation
