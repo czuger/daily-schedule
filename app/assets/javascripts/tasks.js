@@ -7,7 +7,6 @@ const set_tasks_vue = function(){
         data: {
             new_task: null,
             duration: null,
-            day_start_time: Date.now(),
             task_id: 1,
         },
         methods: {
@@ -22,11 +21,6 @@ const set_tasks_vue = function(){
             },
         },
     });
-
-    // v.day_start_time.setHours( 6 );
-    // v.day_start_time.setMinutes( 0 );
-    // v.day_start_time.setSeconds( 0 );
-    // v.day_start_time.setMilliseconds( 0 );
 };
 
 // Initialisation
