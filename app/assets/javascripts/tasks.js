@@ -18,22 +18,8 @@ const set_tasks_vue = function(){
 
                 tasks_array.addTask( v.new_task, v.duration );
 
-                // var _tm = $( '#task_model' ).clone();
-                // var _tl = _tm.find( '#task_libe' );
-                // var _td = _tm.find( '#task_duration' );
-                //
-                // _tl.html( v.new_task );
-                // _td.html( v.duration );
-                //
-                // _tm.attr( 'id', 'task_model_' + v.task_id );
-                // _tl.attr( 'id', 'task_libe_' + v.task_id );
-                // _td.attr( 'id', 'task_duration' + v.task_id );
-                //
-                // $( '#tasks_list' ).append( _tm );
-                //
-                // v.task_id += 1;
+                tasks_array.refresh_tasks_list();
             },
-
         },
     });
 
