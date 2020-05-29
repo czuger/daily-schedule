@@ -1,0 +1,20 @@
+.container
+
+  %h1 Liste des tâches
+
+  #add_tasks_bar
+    .row
+      .col-6
+        = text_field_tag :new_task, '', class: 'form-control', 'v-model' => :new_task
+      .col-1
+        = number_field_tag :duration, '', class: 'form-control', 'v-model' => :duration
+      .col-1
+        = button_tag :add_task, class: 'btn btn-primary', 'v-on:click' => 'add_task'
+
+  -#.row.mt-3
+  -#  .col-6
+  -#    = text_field_tag :new_task, '', class: 'form-control'
+  -#  .col-1
+  -#    = number_field_tag :duration, '', class: 'form-control'
+  -#  .col-1
+  -#    = button_tag :add_task, class: 'btn btn-primary'
