@@ -14,11 +14,13 @@ const set_tasks_vue = function(){
             </div>
         </div>`,
         methods: {
-            duration_change: function (task_id) {
-                console.log( task_id, this.task_data.task_duration );
+            duration_change: function (task_key) {
+                console.log( task_key, this.task_data.task_duration );
+                console.log( tasks_array );
             },
-            task_removal: function (task_id) {
-                console.log( task_id );
+            task_removal: function (task_key) {
+                console.log( task_key );
+                tasks_array.removeTask(task_key);
             }
         }
     });
@@ -33,13 +35,8 @@ const set_tasks_vue = function(){
         },
         methods: {
             add_task: function (event) {
-                // console.log( v.new_task, v.duration );
-                // console.log( tasks_array );
-
                 tasks_array.addTask( v.new_task, v.duration );
-                tasks_array.refresh_tasks_list();
-
-                after_modification();
+                tasks_array.save();
 
                 v.new_task = null;
                 v.duration = null;
@@ -50,11 +47,6 @@ const set_tasks_vue = function(){
     var tasks_array = new TasksManager();
     $.getJSON( "/tasks/load", function( result ){
         tasks_array.load( result, v );
-
-        console.log( tasks_array );
-        console.log( v );
-
-        // after_modification();
     } );
 
     const set_task_duration_watch = function(){

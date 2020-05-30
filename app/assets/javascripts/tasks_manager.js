@@ -23,19 +23,13 @@ class CustomTask {
 
         return previous_time;
     }
-
-    force_key( key ){
-        this.task_key = key;
-    }
-
 }
 
 class TasksManager {
 
     constructor(){
         this.tasks_unique_id = 0;
-        this.tasks = {};
-        this.tasks_order = [];
+        this.tasks = [];
         this.day_start_time = luxon.DateTime.local();
 
         // console.log( this.day_start_time );
@@ -48,63 +42,52 @@ class TasksManager {
 
     addTask( task_desc, task_duration ){
         var _t = new CustomTask( this.tasks_unique_id, task_desc, task_duration );
-        this.tasks[ _t.task_key ] = _t;
-        this.tasks_order.push( _t.task_key );
+        this.tasks.push( _t );
         this.tasks_unique_id += 1;
     }
 
     removeTask( task_key ){
-        delete this.tasks[ task_key ];
-
-        const index = this.tasks_order.indexOf(task_key);
+        const index = this.getTaskId(task_key);
         if (index > -1) {
-            this.tasks_order.splice(index, 1);
+            this.tasks.splice(index, 1);
         }
     }
 
     changeDuration( task_id, task_duration ){
-        this.tasks[ task_id ].task_duration = task_duration;
+        this.tasks[ this.getTaskId(ta) ].task_duration = task_duration;
     }
 
     recomputeTasksList(){
-
-        // $('#tasks_list').empty();
-
         var previous_time = this.day_start_time;
 
-        for (const task_key of this.tasks_order) {
-            previous_time = this.tasks[ task_key ].compute_times( previous_time );
+        for (const task of this.tasks) {
+            previous_time = task.compute_times( previous_time );
         }
     }
 
-    toVueJsArray() {
-        return this.tasks_order.map(e => this.tasks[e]);
+    getTaskId( task_key ){
+        return this.tasks.findIndex( x => x.task_key === task_key );
     }
 
     load( result, vue ){
-        // console.log( result );
 
         this.tasks_unique_id = parseInt( result.tasks_unique_id );
 
         if( result.tasks != undefined ){
-            this.tasks_order = result.tasks_order;
-
-
-            this.tasks = {};
-            for (const task_key of Object.keys( result.tasks ) ) {
-                var _d = result.tasks[ task_key ];
-                var _t = new CustomTask( _d.id, _d.task_desc, _d.task_duration );
-                this.tasks[ task_key ] = _t;
+            this.tasks = [];
+            for (const id of Object.keys( result.tasks ) ) {
+                var task = result.tasks[ id ];
+                this.tasks.push( new CustomTask( task.id, task.task_desc, task.task_duration ) );
             }
         }
 
         this.recomputeTasksList();
-        vue.tasks = this.toVueJsArray();
+        vue.tasks = this.tasks;
     }
 
     save(){
+        console.log( this.tasks );
         var data = {
-            tasks_order: this.tasks_order,
             tasks: this.tasks,
             tasks_unique_id: this.tasks_unique_id
         }
