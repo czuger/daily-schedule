@@ -4,11 +4,9 @@
 
 class CustomTask {
 
-    constructor( id, task_desc, task_duration ){
+    constructor( task_desc, task_duration ){
         this.task_desc = task_desc;
         this.task_duration = task_duration;
-        this.task_key = 'task_' + id;
-        this.id = id;
     }
 
     compute_times( previous_time ){
@@ -28,7 +26,6 @@ class CustomTask {
 class TasksManager {
 
     constructor(){
-        this.tasks_unique_id = 0;
         this.tasks = [];
         this.day_start_time = luxon.DateTime.local();
 
@@ -41,46 +38,43 @@ class TasksManager {
     }
 
     addTask( task_desc, task_duration ){
-        var _t = new CustomTask( this.tasks_unique_id, task_desc, task_duration );
+        var _t = new CustomTask( task_desc, task_duration );
         this.tasks.push( _t );
-        this.tasks_unique_id += 1;
         this.recomputeTasksList();
     }
 
-    removeTask( task_key ){
-        const index = this.getTaskId(task_key);
-        if (index > -1) {
-            this.tasks.splice(index, 1);
+    removeTask( task_id ){
+        // const index = this.getTaskId(task_id);
+        if (task_id > -1) {
+            this.tasks.splice(task_id, 1);
         }
         this.recomputeTasksList();
     }
 
-    changeDuration( task_key, task_duration ){
-        this.tasks[ this.getTaskId(task_key) ].task_duration = task_duration;
+    changeDuration( task_id, task_duration ){
+        this.tasks[ task_id ].task_duration = task_duration;
         this.recomputeTasksList();
     }
 
     recomputeTasksList(){
         var previous_time = this.day_start_time;
 
-        for (const task of this.tasks) {
-            previous_time = task.compute_times( previous_time );
+        for ( var index = 0; index < this.tasks.length; index++ ) {
+            previous_time = this.tasks[ index ].compute_times( previous_time );
+            this.tasks[ index ].id = index;
         }
     }
 
-    getTaskId( task_key ){
-        return this.tasks.findIndex( x => x.task_key === task_key );
+    getTaskId( task_id ){
+        return this.tasks.findIndex( x => x.task_id === task_id );
     }
 
     load( result, vue ){
-
-        this.tasks_unique_id = parseInt( result.tasks_unique_id );
-
-        if( result.tasks != undefined ){
+        if( result != undefined ){
             this.tasks = [];
-            for (const id of Object.keys( result.tasks ) ) {
-                var task = result.tasks[ id ];
-                this.tasks.push( new CustomTask( task.id, task.task_desc, task.task_duration ) );
+            for (const id of Object.keys( result ) ) {
+                var task = result[ id ];
+                this.tasks.push( new CustomTask( task.task_desc, task.task_duration ) );
             }
         }
 
@@ -95,6 +89,6 @@ class TasksManager {
             tasks_unique_id: this.tasks_unique_id
         }
 
-        $.post( "/tasks/create", { data: data } )
+        $.post( "/tasks/create", { data: this.tasks } )
     }
 }
