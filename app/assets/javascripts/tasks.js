@@ -17,10 +17,12 @@ const set_tasks_vue = function(){
             duration_change: function (task_key) {
                 console.log( task_key, this.task_data.task_duration );
                 console.log( tasks_array );
+                tasks_array.changeDuration(task_key, this.task_data.task_duration);
+                tasks_array.save();
             },
             task_removal: function (task_key) {
-                console.log( task_key );
                 tasks_array.removeTask(task_key);
+                tasks_array.save();
             }
         }
     });

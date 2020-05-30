@@ -44,6 +44,7 @@ class TasksManager {
         var _t = new CustomTask( this.tasks_unique_id, task_desc, task_duration );
         this.tasks.push( _t );
         this.tasks_unique_id += 1;
+        this.recomputeTasksList();
     }
 
     removeTask( task_key ){
@@ -51,10 +52,12 @@ class TasksManager {
         if (index > -1) {
             this.tasks.splice(index, 1);
         }
+        this.recomputeTasksList();
     }
 
-    changeDuration( task_id, task_duration ){
-        this.tasks[ this.getTaskId(ta) ].task_duration = task_duration;
+    changeDuration( task_key, task_duration ){
+        this.tasks[ this.getTaskId(task_key) ].task_duration = task_duration;
+        this.recomputeTasksList();
     }
 
     recomputeTasksList(){
