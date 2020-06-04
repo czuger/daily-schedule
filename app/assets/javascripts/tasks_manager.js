@@ -37,10 +37,18 @@ class TasksManager {
 
     }
 
-    addTask( task_desc, task_duration ){
+    addTask( vue, task_desc, task_duration ){
         var _t = new CustomTask( task_desc, task_duration );
+
+        console.log( this.tasks );
         this.tasks.push( _t );
-        this.recomputeTasksList();
+        console.log( this.tasks );
+
+        // this.recomputeTasksList();
+
+        // vue.tasks = this.tasks;
+
+        // this.tasks.splice(this.tasks.length+1);
     }
 
     removeTask( task_id ){
@@ -59,9 +67,15 @@ class TasksManager {
     recomputeTasksList(){
         var previous_time = this.day_start_time;
 
+        console.log( this.tasks.length );
+
         for ( var index = 0; index < this.tasks.length; index++ ) {
             previous_time = this.tasks[ index ].compute_times( previous_time );
             this.tasks[ index ].id = index;
+
+            console.log( this.tasks[ index ].task_desc, this.tasks[ index ].start_time );
+
+            // console.log( index );
         }
     }
 

@@ -15,8 +15,6 @@ const set_tasks_vue = function(){
         </div>`,
         methods: {
             duration_change: function (task_id) {
-                console.log( task_id, this.task_data.task_duration );
-                console.log( tasks_array );
                 tasks_array.changeDuration(task_id, this.task_data.task_duration);
                 tasks_array.save();
             },
@@ -37,7 +35,12 @@ const set_tasks_vue = function(){
         },
         methods: {
             add_task: function (event) {
-                tasks_array.addTask( v.new_task, v.duration );
+                var _t = new CustomTask( v.new_task, v.duration );
+
+                this.tasks.push( _t );
+
+                tasks_array.recomputeTasksList();
+
                 tasks_array.save();
 
                 v.new_task = null;
@@ -87,14 +90,6 @@ const set_tasks_vue = function(){
             }
         );
         $( "#tasks_list" ).disableSelection();
-    }
-
-    const after_modification = function() {
-        // tasks_array.refresh_tasks_list();
-        // set_task_duration_watch();
-        // set_task_remove_watch();
-        // set_tasks_sortable();
-        // tasks_array.save();
     }
 };
 
