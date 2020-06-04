@@ -21,11 +21,16 @@ class CustomTask {
 
         return previous_time;
     }
+
+    getVueCompatibleObject(){
+        return{ task_desc: this.task_desc, task_duration: this.task_duration, start_time: this.start_time,
+            end_time: this.end_time, id: this.id }
+    }
 }
 
 class TasksManager {
 
-    constructor(){
+    constructor( vue ){
         this.tasks = [];
         this.day_start_time = luxon.DateTime.local();
 
@@ -35,20 +40,15 @@ class TasksManager {
         this.day_start_time = this.day_start_time.plus({hours: 12, minutes: 15});
         // console.log( this.day_start_time );
 
+        this.vue = vue;
+
     }
 
-    addTask( vue, task_desc, task_duration ){
+    addTask( task_desc, task_duration ){
         var _t = new CustomTask( task_desc, task_duration );
 
-        console.log( this.tasks );
         this.tasks.push( _t );
-        console.log( this.tasks );
-
-        // this.recomputeTasksList();
-
-        // vue.tasks = this.tasks;
-
-        // this.tasks.splice(this.tasks.length+1);
+        this.recomputeTasksList();
     }
 
     removeTask( task_id ){
@@ -77,13 +77,26 @@ class TasksManager {
 
             // console.log( index );
         }
+
+        // Don't work with add task with direct link to this.tasks
+        this.vue.tasks = this.getVueCompatibleObject();
     }
 
     getTaskId( task_id ){
         return this.tasks.findIndex( x => x.task_id === task_id );
     }
 
-    load( result, vue ){
+    getVueCompatibleObject(){
+        let obj = [];
+
+        for( let elem of this.tasks){
+            obj.push( elem.getVueCompatibleObject() );
+        }
+
+        return obj;
+    }
+
+    load( result ){
         if( result != undefined ){
             this.tasks = [];
             for (const id of Object.keys( result ) ) {
@@ -93,7 +106,6 @@ class TasksManager {
         }
 
         this.recomputeTasksList();
-        vue.tasks = this.tasks;
     }
 
     save(){

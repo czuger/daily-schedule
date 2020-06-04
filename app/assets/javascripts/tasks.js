@@ -31,16 +31,11 @@ const set_tasks_vue = function(){
             new_task: null,
             duration: null,
 
-            tasks: []
+            tasks: null
         },
         methods: {
             add_task: function (event) {
-                var _t = new CustomTask( v.new_task, v.duration );
-
-                this.tasks.push( _t );
-
-                tasks_array.recomputeTasksList();
-
+                tasks_array.addTask( v.new_task, v.duration );
                 tasks_array.save();
 
                 v.new_task = null;
@@ -49,17 +44,15 @@ const set_tasks_vue = function(){
         },
     });
 
-    var tasks_array = new TasksManager();
+    var tasks_array = new TasksManager( v );
     $.getJSON( "/tasks/load", function( result ){
-        tasks_array.load( result, v );
+        tasks_array.load( result );
     } );
 
     const set_task_duration_watch = function(){
         $( '.task_duration' ).change( function(){
             var _t = $(this);
             tasks_array.changeDuration( _t.attr( 'task_id' ), _t.val() );
-
-            after_modification();
         });
     };
 
@@ -67,8 +60,6 @@ const set_tasks_vue = function(){
         $( '.task_remove' ).click( function(){
             var _t = $(this);
             tasks_array.removeTask( _t.attr( 'task_id' ) );
-
-            after_modification();
         });
     };
 
@@ -84,8 +75,6 @@ const set_tasks_vue = function(){
                         tasks_array.tasks_order.push( $(this).attr( 'task_id') );
                         // console.log( $(this).attr( 'task_id') );
                     });
-
-                    after_modification();
                 }
             }
         );
