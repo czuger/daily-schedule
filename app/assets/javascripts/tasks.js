@@ -37,11 +37,20 @@ const set_tasks_vue = function(){
         },
         methods: {
             add_task: function (event) {
+
+                console.log( v.duration );
+
+                if( v.duration == null ){
+                    v.duration = 30;
+                }
+
                 tasks_array.addTask( v.new_task, v.duration );
                 tasks_array.save();
 
                 v.new_task = null;
                 v.duration = null;
+
+                $('#new_task').focus();
             },
             // According to https://stackoverflow.com/questions/32106155/can-you-force-vue-js-to-reload-re-render
             // and https://michaelnthiessen.com/force-re-render/

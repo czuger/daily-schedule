@@ -37,7 +37,7 @@ class TasksManager {
         // console.log( this.day_start_time );
         this.day_start_time = this.day_start_time.startOf('day');
         // console.log( this.day_start_time );
-        this.day_start_time = this.day_start_time.plus({hours: 12, minutes: 15});
+        this.day_start_time = this.day_start_time.plus({hours: 6, minutes: 0});
         // console.log( this.day_start_time );
 
         this.vue = vue;
