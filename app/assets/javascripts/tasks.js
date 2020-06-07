@@ -31,7 +31,9 @@ const set_tasks_vue = function(){
             new_task: null,
             duration: null,
 
-            tasks: null
+            tasks: null,
+
+            componentKey: 0
         },
         methods: {
             add_task: function (event) {
@@ -41,6 +43,12 @@ const set_tasks_vue = function(){
                 v.new_task = null;
                 v.duration = null;
             },
+            // According to https://stackoverflow.com/questions/32106155/can-you-force-vue-js-to-reload-re-render
+            // and https://michaelnthiessen.com/force-re-render/
+            // this is the best solution.
+            force_refresh: function(){
+                this.componentKey += 1;
+            }
         },
     });
 
@@ -59,9 +67,8 @@ const set_tasks_vue = function(){
                     tasks_array.reorder( new_order );
                     tasks_array.save();
 
-                    // Vue.forceUpdate();
-
-                    // console.log( v.tasks );
+                    // Have to force refresh here otherwise reorder is not immediately taken in account.
+                    v.force_refresh();
                 }
             }
         );

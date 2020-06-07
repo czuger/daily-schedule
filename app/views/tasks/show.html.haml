@@ -14,5 +14,9 @@
 
     #tasks_list
       -#%scheduled-task{ 'v-for' => '(task, index) in tasks', 'key' => 'index', 'v-bind:task_data' => 'task' }
-      -#%scheduled-task{ 'v-for' => 'task in tasks', 'key' => 'task.id', 'v-bind:task_data' => 'task' }
-      <scheduled-task v-for="(task, index) in tasks" :key="index" v-bind:task_data="task">
+      -#%scheduled-task{ 'v-for' => 'task in tasks', 'key' => 'componentKey', 'v-bind:task_data' => 'task' }
+      -#<scheduled-task v-for="(task, index) in tasks" :key="componentKey + index" v-bind:task_data="task">
+
+      // OK this is the final formula that is working. index is for each component, componentKey is a base
+      // that increase each time you reorder ensuring the refresh.
+      %scheduled-task{ 'v-for' => '(task, index) in tasks', ':key' => 'componentKey + index', 'v-bind:task_data' => 'task' }
