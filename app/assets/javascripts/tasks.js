@@ -3,14 +3,22 @@ const set_tasks_vue = function(){
     Vue.component('scheduled-task', {
         props: ['task_data'],
         template: `<div class="row sortable-row mt-3" v-bind:task_id="task_data.id">
-            <div class="col-6">{{ task_data.task_desc }}</div>
+            <div class="col-1">
+            <button name="button" type="submit" @click="task_check(task_data.id)" class="btn btn-block" v-bind:class="[task_data.check ? 'btn-success' : 'btn-warning']">
+                {{ task_data.check ? 'V' : 'O' }}
+            </button>
+            </div>
+            <div class="col-5">
+                <strike v-if="task_data.check">{{ task_data.task_desc }}</strike>
+                <span v-else>{{ task_data.task_desc }}</span>
+            </div>
             <div class="col-1">{{ task_data.start_time }}</div>
             <div class="col-1">{{ task_data.end_time }}</div>
             <div class="col-1">
             <input type="number" name="task_duration" v-on:change="duration_change(task_data.id)" v-model="task_data.task_duration" class="form-control">
             </div>
             <div class="col-1">
-            <button name="button" type="submit" @click="task_removal(task_data.id)" class="btn btn-danger">remove_task</button>
+            <button name="button" type="submit" @click="task_removal(task_data.id)" class="btn btn-danger btn-block">X</button>
             </div>
         </div>`,
         methods: {
@@ -21,7 +29,12 @@ const set_tasks_vue = function(){
             task_removal: function (task_id) {
                 tasks_array.removeTask(task_id);
                 tasks_array.save();
+            },
+            task_check: function (task_id) {
+                tasks_array.taskCheck(task_id);
+                tasks_array.save();
             }
+
         }
     });
 
@@ -37,8 +50,6 @@ const set_tasks_vue = function(){
         },
         methods: {
             add_task: function (event) {
-
-                console.log( v.duration );
 
                 if( v.duration == null ){
                     v.duration = 30;
@@ -95,12 +106,12 @@ const set_tasks_vue = function(){
 $(function() {
     set_tasks_vue();
 
-    $(document).keypress(function(event){
-
-        // Thanks to https://stackoverflow.com/questions/57843201/trigger-a-html-button-when-you-press-enter
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        // console.log( keycode );
-        if(keycode == '13'){
-            // $("#add_task").click();
-        }});
+    // $(document).keypress(function(event){
+    //
+    //     // Thanks to https://stackoverflow.com/questions/57843201/trigger-a-html-button-when-you-press-enter
+    //     var keycode = (event.keyCode ? event.keyCode : event.which);
+    //     // console.log( keycode );
+    //     if(keycode == '13'){
+    //         // $("#add_task").click();
+    //     }});
 });

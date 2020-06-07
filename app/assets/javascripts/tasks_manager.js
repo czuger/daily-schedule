@@ -4,9 +4,17 @@
 
 class CustomTask {
 
-    constructor( task_desc, task_duration ){
+    constructor( task_desc, task_duration, check=null ){
         this.task_desc = task_desc;
         this.task_duration = task_duration;
+
+        if( check == null ){
+            this.check = false;
+        }
+        else
+        {
+            this.check = ( check == 'true' );
+        }
     }
 
     compute_times( previous_time ){
@@ -24,7 +32,7 @@ class CustomTask {
 
     getVueCompatibleObject(){
         return{ task_desc: this.task_desc, task_duration: this.task_duration, start_time: this.start_time,
-            end_time: this.end_time, id: this.id }
+            end_time: this.end_time, id: this.id, check: this.check }
     }
 }
 
@@ -37,11 +45,10 @@ class TasksManager {
         // console.log( this.day_start_time );
         this.day_start_time = this.day_start_time.startOf('day');
         // console.log( this.day_start_time );
-        this.day_start_time = this.day_start_time.plus({hours: 6, minutes: 0});
+        this.day_start_time = this.day_start_time.plus({hours: 7, minutes: 30});
         // console.log( this.day_start_time );
 
         this.vue = vue;
-
     }
 
     addTask( task_desc, task_duration ){
@@ -59,6 +66,13 @@ class TasksManager {
         this.recomputeTasksList();
     }
 
+    taskCheck( task_id ){
+        console.log( this.tasks[ task_id ] );
+
+        this.tasks[ task_id ].check = !this.tasks[ task_id ].check;
+        this.vue.tasks = this.getVueCompatibleObject();
+    }
+
     changeDuration( task_id, task_duration ){
         this.tasks[ task_id ].task_duration = task_duration;
         this.recomputeTasksList();
@@ -73,7 +87,7 @@ class TasksManager {
             previous_time = this.tasks[ index ].compute_times( previous_time );
             this.tasks[ index ].id = index;
 
-            console.log( this.tasks[ index ].task_desc, this.tasks[ index ].start_time );
+            // console.log( this.tasks[ index ].task_desc, this.tasks[ index ].start_time );
 
             // console.log( index );
         }
@@ -108,7 +122,7 @@ class TasksManager {
             this.tasks = [];
             for (const id of Object.keys( result ) ) {
                 var task = result[ id ];
-                this.tasks.push( new CustomTask( task.task_desc, task.task_duration ) );
+                this.tasks.push( new CustomTask( task.task_desc, task.task_duration, task.check ) );
             }
         }
 
