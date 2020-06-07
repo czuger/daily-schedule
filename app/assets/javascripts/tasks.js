@@ -2,7 +2,7 @@ const set_tasks_vue = function(){
 
     Vue.component('scheduled-task', {
         props: ['task_data'],
-        template: `<div class="row sortable-row mt-3">
+        template: `<div class="row sortable-row mt-3" v-bind:task_id="task_data.id">
             <div class="col-6">{{ task_data.task_desc }}</div>
             <div class="col-1">{{ task_data.start_time }}</div>
             <div class="col-1">{{ task_data.end_time }}</div>
@@ -44,42 +44,35 @@ const set_tasks_vue = function(){
         },
     });
 
-    var tasks_array = new TasksManager( v );
-    $.getJSON( "/tasks/load", function( result ){
-        tasks_array.load( result );
-    } );
-
-    const set_task_duration_watch = function(){
-        $( '.task_duration' ).change( function(){
-            var _t = $(this);
-            tasks_array.changeDuration( _t.attr( 'task_id' ), _t.val() );
-        });
-    };
-
-    const set_task_remove_watch = function(){
-        $( '.task_remove' ).click( function(){
-            var _t = $(this);
-            tasks_array.removeTask( _t.attr( 'task_id' ) );
-        });
-    };
-
     const set_tasks_sortable = function() {
         $( "#tasks_list" ).sortable(
             {
                 items: '.sortable-row',
                 stop: function(){
 
-                    tasks_array.tasks_order = [];
-
+                    let new_order = [];
                     $("#tasks_list").children().each(function(){
-                        tasks_array.tasks_order.push( $(this).attr( 'task_id') );
-                        // console.log( $(this).attr( 'task_id') );
+                        new_order.push( parseInt( $(this).attr( 'task_id') ) );
                     });
+
+                    // console.log( new_order );
+                    tasks_array.reorder( new_order );
+                    tasks_array.save();
+
+                    // Vue.forceUpdate();
+
+                    // console.log( v.tasks );
                 }
             }
         );
         $( "#tasks_list" ).disableSelection();
     }
+
+    var tasks_array = new TasksManager( v );
+    $.getJSON( "/tasks/load", function( result ){
+        tasks_array.load( result );
+        set_tasks_sortable();
+    } );
 };
 
 // Initialisation

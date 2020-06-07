@@ -67,7 +67,7 @@ class TasksManager {
     recomputeTasksList(){
         var previous_time = this.day_start_time;
 
-        console.log( this.tasks.length );
+        // console.log( this.tasks.length );
 
         for ( var index = 0; index < this.tasks.length; index++ ) {
             previous_time = this.tasks[ index ].compute_times( previous_time );
@@ -82,8 +82,15 @@ class TasksManager {
         this.vue.tasks = this.getVueCompatibleObject();
     }
 
-    getTaskId( task_id ){
-        return this.tasks.findIndex( x => x.task_id === task_id );
+    reorder( new_order ){
+        let new_tab = [];
+
+        for( let task_id of new_order ){
+            new_tab.push( this.tasks[ task_id ] );
+        }
+
+        this.tasks = new_tab;
+        this.recomputeTasksList();
     }
 
     getVueCompatibleObject(){

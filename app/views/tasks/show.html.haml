@@ -13,4 +13,6 @@
           = button_tag :add_task, class: 'btn btn-primary', 'v-on:click' => 'add_task', id: 'add_task'
 
     #tasks_list
-      %scheduled-task{ 'v-for' => 'task in tasks', 'v-bind:key' => 'task.id', 'v-bind:task_data' => 'task' }
+      -#%scheduled-task{ 'v-for' => '(task, index) in tasks', 'key' => 'index', 'v-bind:task_data' => 'task' }
+      -#%scheduled-task{ 'v-for' => 'task in tasks', 'key' => 'task.id', 'v-bind:task_data' => 'task' }
+      <scheduled-task v-for="(task, index) in tasks" :key="index" v-bind:task_data="task">
