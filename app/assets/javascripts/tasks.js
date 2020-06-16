@@ -8,7 +8,7 @@ const set_tasks_vue = function(){
                 {{ task_data.check ? 'V' : 'O' }}
             </button>
             </div>
-            <div class="col-5">
+            <div class="col-7">
                 <strike v-if="task_data.check">{{ task_data.task_desc }}</strike>
                 <span v-else>{{ task_data.task_desc }}</span>
             </div>
@@ -44,9 +44,18 @@ const set_tasks_vue = function(){
             new_task: null,
             duration: null,
 
+            start_hour: 8,
+            start_minute: 0,
+
             tasks: null,
 
             componentKey: 0
+        },
+        watch: {
+            start_hour: function (val) {
+
+                tasks_array.setStartTime(this.start_hour, this.start_minute);
+            },
         },
         methods: {
             add_task: function (event) {

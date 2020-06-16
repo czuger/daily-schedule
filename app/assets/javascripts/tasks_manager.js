@@ -45,10 +45,17 @@ class TasksManager {
         // console.log( this.day_start_time );
         this.day_start_time = this.day_start_time.startOf('day');
         // console.log( this.day_start_time );
-        this.day_start_time = this.day_start_time.plus({hours: 7, minutes: 30});
+        this.day_start_time = this.day_start_time.plus({hours: 8, minutes: 0});
         // console.log( this.day_start_time );
 
         this.vue = vue;
+    }
+
+    setStartTime( new_hour, new_minutes ){
+        this.day_start_time = this.day_start_time.startOf('day');
+        this.day_start_time = this.day_start_time.plus( { hours: new_hour, minutes: new_minutes } );
+
+        this.recomputeTasksList();
     }
 
     addTask( task_desc, task_duration ){

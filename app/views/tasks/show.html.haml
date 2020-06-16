@@ -1,11 +1,18 @@
 .container
 
-  %h1 Liste des tâches
-
   #tasks
+
+    .row
+      .col-10
+        %h1 Liste des tâches
+      .col-1
+        = number_field_tag :start_hour, '', class: 'form-control', 'v-model' => :start_hour
+      .col-1
+        = number_field_tag :start_minute, '', class: 'form-control', 'v-model' => :start_minute
+
     #add_tasks_bar
       .row
-        .col-6
+        .col-10
           = text_field_tag :new_task, '', class: 'form-control', 'v-model' => :new_task
         .col-1
           = number_field_tag :duration, '', class: 'form-control', 'v-model' => :duration
