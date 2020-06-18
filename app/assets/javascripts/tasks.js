@@ -105,10 +105,9 @@ const set_tasks_vue = function(){
     }
 
     var tasks_array = new TasksManager( v );
-    $.getJSON( "/tasks/load", function( result ){
-        tasks_array.load( result );
-        set_tasks_sortable();
-    } );
+
+    tasks_array.load();
+    set_tasks_sortable();
 };
 
 // Initialisation

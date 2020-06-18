@@ -124,7 +124,9 @@ class TasksManager {
         return obj;
     }
 
-    load( result ){
+    load(){
+        const result = LsManager.get_value( 'daily-schedule', 'tasks' );
+
         if( result != undefined ){
             this.tasks = [];
             for (const id of Object.keys( result ) ) {
@@ -143,6 +145,8 @@ class TasksManager {
             tasks_unique_id: this.tasks_unique_id
         }
 
-        $.post( "/tasks/create", { data: this.tasks } )
+        // $.post( "/tasks/create", { data: this.tasks } )
+
+        LsManager.set_value( 'daily-schedule', 'tasks', data );
     }
 }
