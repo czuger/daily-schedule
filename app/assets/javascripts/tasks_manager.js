@@ -140,10 +140,7 @@ class TasksManager {
 
     save(){
         console.log( this.tasks );
-        var data = {
-            tasks: this.tasks,
-            tasks_unique_id: this.tasks_unique_id
-        }
+        var data = this.tasks;
 
         // $.post( "/tasks/create", { data: this.tasks } )
 
