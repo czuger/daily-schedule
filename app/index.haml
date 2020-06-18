@@ -15,29 +15,20 @@
             %h1 Liste des tâches
           .col-1
             %input#start_hour.form-control{ name: :start_hour, type: :number, 'v-model' => :start_hour }
-            -#= number_field_tag :start_hour, '', class: 'form-control', 'v-model' => :start_hour
           .col-1
             %input#start_minute.form-control{ name: :start_minute, type: :number, 'v-model' => :start_minute }
-            -#= number_field_tag :start_minute, '', class: 'form-control', 'v-model' => :start_minute
 
         #add_tasks_bar
           .row
             .col-10
               %input#new_task.form-control{ name: :new_task, type: :text, 'v-model' => :new_task }
-              -#= text_field_tag :new_task, '', class: 'form-control', 'v-model' => :new_task
             .col-1
               %input#duration.form-control{ name: :duration, type: :number, 'v-model' => :duration }
-              -#= number_field_tag :duration, '', class: 'form-control', 'v-model' => :duration
             .col-1
               %button#add_task.btn.btn-primary{ 'v-on:click' => :add_task, name: :button, type: :button }
                 Add
-              -#= button_tag :add_task, class: 'btn btn-primary', 'v-on:click' => 'add_task', id: 'add_task'
 
         #tasks_list
-          -#%scheduled-task{ 'v-for' => '(task, index) in tasks', 'key' => 'index', 'v-bind:task_data' => 'task' }
-          -#%scheduled-task{ 'v-for' => 'task in tasks', 'key' => 'componentKey', 'v-bind:task_data' => 'task' }
-          -#<scheduled-task v-for='(task, index) in tasks' :key='componentKey + index' v-bind:task_data='task'>
-
           // OK this is the final formula that is working. index is for each component, componentKey is a base
           // that increase each time you reorder ensuring the refresh.
           %scheduled-task{ 'v-for' => '(task, index) in tasks', ':key' => 'componentKey + index', 'v-bind:task_data' => 'task' }

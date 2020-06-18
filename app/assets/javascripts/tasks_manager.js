@@ -88,15 +88,9 @@ class TasksManager {
     recomputeTasksList(){
         var previous_time = this.day_start_time;
 
-        // console.log( this.tasks.length );
-
         for ( var index = 0; index < this.tasks.length; index++ ) {
             previous_time = this.tasks[ index ].compute_times( previous_time );
             this.tasks[ index ].id = index;
-
-            // console.log( this.tasks[ index ].task_desc, this.tasks[ index ].start_time );
-
-            // console.log( index );
         }
 
         // Don't work with add task with direct link to this.tasks
@@ -141,8 +135,6 @@ class TasksManager {
     save(){
         console.log( this.tasks );
         var data = this.tasks;
-
-        // $.post( "/tasks/create", { data: this.tasks } )
 
         LsManager.set_value( 'daily-schedule', 'tasks', data );
     }
