@@ -53,8 +53,12 @@ const set_tasks_vue = function(){
         },
         watch: {
             start_hour: function (val) {
-
                 tasks_array.setStartTime(this.start_hour, this.start_minute);
+                LsManager.set_value( 'daily-schedule', 'start_hour', this.start_hour );
+            },
+            start_minute: function (val) {
+                tasks_array.setStartTime(this.start_hour, this.start_minute);
+                LsManager.set_value( 'daily-schedule', 'start_minute', this.start_minute );
             },
         },
         methods: {
@@ -79,6 +83,16 @@ const set_tasks_vue = function(){
                 this.componentKey += 1;
             }
         },
+        mounted: function() {
+            // tasks_array.setStartTime(this.start_hour, this.start_minute);
+            const hour = LsManager.get_value( 'daily-schedule', 'start_hour' ) || 8;
+            const minute = LsManager.get_value( 'daily-schedule', 'start_minute' ) || 0;
+
+            this.start_hour = hour;
+            this.start_minute = minute;
+
+            // tasks_array.setStartTime(this.start_hour, this.start_minute);
+        }
     });
 
     const set_tasks_sortable = function() {
