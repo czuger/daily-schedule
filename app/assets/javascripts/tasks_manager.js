@@ -85,6 +85,10 @@ class TasksManager {
         this.recomputeTasksList();
     }
 
+    changeDesc( task_id, task_desk ){
+        this.tasks[ task_id ].task_desk = task_desk;
+    }
+
     recomputeTasksList(){
         var previous_time = this.day_start_time;
 
