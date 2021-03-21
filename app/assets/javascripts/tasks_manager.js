@@ -13,7 +13,8 @@ class CustomTask {
         }
         else
         {
-            this.check = ( check == 'true' );
+            // this.check = ( check == 'true' );
+            this.check = check;
         }
     }
 
